@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="760.0" prefWidth="1132.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+   <top>
+      <MenuBar BorderPane.alignment="CENTER">
+        <menus>
+          <Menu mnemonicParsing="false" text="File">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Close" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Edit">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Delete" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Help">
+            <items>
+              <MenuItem mnemonicParsing="false" text="About" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+   </top>
+   <bottom>
+      <AnchorPane prefHeight="30.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label layoutX="51.0" layoutY="20.0" text="Label" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+            </Label>
+         </children>
+      </AnchorPane>
+   </bottom>
+   <center>
+      <TableView editable="true" prefHeight="687.0" prefWidth="467.0" BorderPane.alignment="CENTER">
+        <columns>
+          <TableColumn prefWidth="150.0" text="C1" />
+          <TableColumn minWidth="0.0" prefWidth="102.0" text="C2" />
+        </columns>
+      </TableView>
+   </center>
+   <left>
+      <TreeView fx:id="projectTree" onContextMenuRequested="#treeViewContextMenuRequest" onDragDropped="#handleDragDrop" onDragOver="#handleDragOver" onMouseClicked="#treeViewMouseClicked" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+   </left>
+   <right>
+      <AnchorPane prefHeight="687.0" prefWidth="541.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button fx:id="btnTest" layoutX="35.0" layoutY="42.0" mnemonicParsing="false" onAction="#btnTestClick" text="Test" />
+            <Button fx:id="btnGetData" layoutX="35.0" layoutY="104.0" mnemonicParsing="false" onAction="#btnGetDataClick" text="Button" />
+            <TextArea fx:id="previewArea" layoutX="4.0" layoutY="221.0" prefHeight="462.0" prefWidth="187.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="220.0" />
+         </children>
+      </AnchorPane>
+   </right>
+</BorderPane>
