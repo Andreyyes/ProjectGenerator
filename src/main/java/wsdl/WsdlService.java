@@ -1,5 +1,6 @@
 package wsdl;
 
+import javafx.scene.control.TreeItem;
 import org.apache.cxf.common.util.PackageUtils;
 import org.apache.cxf.tools.util.NameUtil;
 import org.ow2.easywsdl.wsdl.api.Description;
@@ -8,10 +9,13 @@ import org.ow2.easywsdl.wsdl.api.Service;
 import org.ow2.easywsdl.wsdl.api.WSDLException;
 import sample.TreeNode;
 import javax.xml.namespace.QName;
+import java.util.ArrayList;
+import java.util.List;
 
 public class WsdlService extends TreeNode {
 
     private WsdlFile wsdlFile;
+    private List<WsdlPort> wsdlPorts;
 
     private String serviceName;
     private String namespace;
@@ -43,31 +47,52 @@ public class WsdlService extends TreeNode {
             interfaceName = "NONE";
             convertedInterfaceName = "NONE";
         }
+
+        wsdlPorts = new ArrayList<>();
+        service.getEndpoints().forEach(endpoint -> {
+            wsdlPorts.add(new WsdlPort(this, endpoint));
+        });
     }
-
-    static String pattern = "<cxf:cxfEndpoint id=\"%s\"\n" +
-            "\taddress=\"/%s\"\n" +
-            "\twsdlURL=\"META-INF/wsdl/%s\"\n" +
-            "\tendpointName=\"a:%s\"\n" + //Сюда прописывать название порта из сервиса <port name ="">!
-            "\tserviceName=\"a:%s\"\n" +
-            "\tserviceClass=\"%s\"\n" +
-            "\txmlns:a=\"%s\"/>";
-
-//    String filledPattern = "<cxf:cxfEndpoint id=\"requestServices\"\n" +
-//            "address=\"/srvApplTechConnectionReverseSK\"\n" +
-//            "wsdlURL=\"META-INF/wsdl/srvApplTechConnectionReverseSK.wsdl\"\n" +
-//            "endpointName=\"a:WebServiceASSOSoap\" \n" +
-//            "serviceName=\"a:srvApplTechConnectionResultsSK\"\n" +
-//            "serviceClass=\"org.datacontract.schemas._2004._07.asso_common_entities.WebServiceASSOPortType\"\n" +
-//            "xmlns:a=\"http://schemas.datacontract.org/2004/07/ASSO.Common.Entities\">\n";
 
     @Override
     public String toString() {
         return serviceName;
     }
 
-    public String getEndpoint() {
-        String rez = String.format(pattern, serviceName, serviceName, wsdlFile.getFile().getName(), serviceName, serviceName, convertedNamespace + "." + convertedInterfaceName, namespace);
-        return rez;
+    public WsdlFile getWsdlFile() {
+        return wsdlFile;
+    }
+
+    public List<WsdlPort> getWsdlPorts() {
+        return wsdlPorts;
+    }
+
+    public String getServiceName() {
+        return serviceName;
+    }
+
+    public String getNamespace() {
+        return namespace;
+    }
+
+    public String getConvertedNamespace() {
+        return convertedNamespace;
+    }
+
+    public String getInterfaceName() {
+        return interfaceName;
+    }
+
+    public String getConvertedInterfaceName() {
+        return convertedInterfaceName;
+    }
+
+    public TreeItem<TreeNode> getAsTreeItem() {
+        TreeItem<TreeNode> treeItem = new TreeItem<>(this);
+        List<TreeItem<TreeNode>> children = treeItem.getChildren();
+        wsdlPorts.forEach(wsdlPort -> {
+            children.add(wsdlPort.getAsTreeItem());
+        });
+        return treeItem;
     }
 }

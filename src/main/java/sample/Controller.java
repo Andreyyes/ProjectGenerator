@@ -1,13 +1,13 @@
 package sample;
 
 import javafx.event.ActionEvent;
-import javafx.event.EventTarget;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.TransferMode;
 import wsdl.WsdlFile;
+import wsdl.WsdlPort;
 import wsdl.WsdlService;
 
 import java.io.File;
@@ -103,7 +103,7 @@ public class Controller implements Initializable {
         WsdlFile wsdlFile = new WsdlFile(file);
 
         //Добавляем в дерево WSDL-файл
-        projectTree.getRoot().getChildren().add(wsdlFile.getTreeNode());
+        projectTree.getRoot().getChildren().add(wsdlFile.getAsTreeItem());
         //projectTree.getRoot().getChildren().add(new TreeItem<>(new WsdlFile(file)));
 
 
@@ -126,11 +126,18 @@ public class Controller implements Initializable {
                 previewArea.setText(wsdlFile.getFileContent());
             }
 
-            if (treeNode.getClass() == WsdlService.class) {
-                WsdlService wsdlService = (WsdlService) treeNode;
+//            if (treeNode.getClass() == WsdlService.class) {
+//                WsdlService wsdlService = (WsdlService) treeNode;
+//                //previewArea.setText(wsdlFile.getWsdlData().toString());
+//
+//                previewArea.setText(wsdlService.getEndpoint());
+//            }
+
+            if (treeNode.getClass() == WsdlPort.class) {
+                WsdlPort wsdlPort = (WsdlPort) treeNode;
                 //previewArea.setText(wsdlFile.getWsdlData().toString());
 
-                previewArea.setText(wsdlService.getEndpoint());
+                previewArea.setText(wsdlPort.getEndpoint());
             }
         }
     }

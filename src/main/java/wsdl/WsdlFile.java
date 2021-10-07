@@ -60,10 +60,19 @@ public class WsdlFile extends TreeNode {
         return fileContent;
     }
 
-    public TreeItem<TreeNode> getTreeNode() {
+//    public TreeItem<TreeNode> getAsTreeNode() {
+//        TreeItem<TreeNode> treeItem = new TreeItem<>(this);
+//        wsdlServices.forEach(wsdlService -> {
+//            treeItem.getChildren().add(new TreeItem<>(wsdlService));
+//        });
+//        return treeItem;
+//    }
+
+    public TreeItem<TreeNode> getAsTreeItem() {
         TreeItem<TreeNode> treeItem = new TreeItem<>(this);
+        List<TreeItem<TreeNode>> children = treeItem.getChildren();
         wsdlServices.forEach(wsdlService -> {
-            treeItem.getChildren().add(new TreeItem<>(wsdlService));
+            children.add(wsdlService.getAsTreeItem());
         });
         return treeItem;
     }
