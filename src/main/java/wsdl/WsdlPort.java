@@ -1,40 +1,53 @@
 package wsdl;
 
-//import com.predic8.schema.*;
-//import com.predic8.wsdl.*;
 import javafx.scene.control.TreeItem;
-//import org.ow2.easywsdl.wsdl.api.Endpoint;
 import org.apache.cxf.tools.util.NameUtil;
 import sample.TreeNode;
 
+import javax.wsdl.BindingOperation;
+import javax.wsdl.Operation;
 import javax.wsdl.Port;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class WsdlPort extends TreeNode {
 
+    private TreeItem<TreeNode> treeItem = null;
+
     private final WsdlService wsdlService;
+    private final List<WsdlOperation> wsdlOperations;
 
-    private Port port;
-    private final String portName;
-
-    //private String interfaceName;
-    private String convertedInterfaceName;
+    private final Port port;
+    private final String portName; //Interface
+    private final String convertedInterfaceName;
 
     public WsdlPort(WsdlService wsdlService, Port port) {
         this.wsdlService = wsdlService;
         this.port = port;
 
         portName = port.getName();
-        //interfaceName = port.getBinding().
+        convertedInterfaceName = NameUtil.mangleNameToClassName(portName);
 
-        try {
+        //try {
             //InterfaceType interfaceType = service.getInterface();
             //interfaceName = service.getInterface().getQName().getLocalPart();
-            convertedInterfaceName = NameUtil.mangleNameToClassName(portName);
-        } catch (Exception e) {
+        //} catch (Exception e) {
             //interfaceName = "NONE";
-            convertedInterfaceName = "NONE";
-        }
+        //    convertedInterfaceName = "NONE";
+        //}
+
+        //interfaceName = port.getBinding().
+
+        @SuppressWarnings("unchecked")
+                //List lst = port.getBinding().getBindingOperations();
+        List<BindingOperation> operations = port.getBinding().getBindingOperations();
+        wsdlOperations = new ArrayList<>();
+        operations.forEach(operation -> {
+            wsdlOperations.add(new WsdlOperation(this, operation));
+        });
+
+        createTreeItem();
     }
 
     public WsdlService getWsdlService() {
@@ -45,7 +58,7 @@ public class WsdlPort extends TreeNode {
         return portName;
     }
 
-    //    String filledPattern = "<cxf:cxfEndpoint id=\"requestServices\"\n" +
+//    String filledPattern = "<cxf:cxfEndpoint id=\"requestServices\"\n" +
 //            "address=\"/srvApplTechConnectionReverseSK\"\n" +
 //            "wsdlURL=\"META-INF/wsdl/srvApplTechConnectionReverseSK.wsdl\"\n" +
 //            "serviceName=\"a:srvApplTechConnectionResultsSK\"\n" +
@@ -70,7 +83,7 @@ public class WsdlPort extends TreeNode {
                 wsdlService.getWsdlFile().getFile().getName(), //wsdlURL
                 wsdlService.getServiceName(), //serviceName
                 portName, //endpointName
-                wsdlService.getConvertedNamespace() + "." + convertedInterfaceName,//wsdlService.getConvertedInterfaceName(), //serviceClass
+                wsdlService.getConvertedNamespace() + "." + convertedInterfaceName, //serviceClass
                 wsdlService.getNamespace()); //xmlns:a
         return rez;
     }
@@ -80,8 +93,15 @@ public class WsdlPort extends TreeNode {
         return portName;
     }
 
-    public TreeItem<TreeNode> getAsTreeItem() {
-        TreeItem<TreeNode> treeItem = new TreeItem<>(this);
+    public void createTreeItem() {
+        treeItem = new TreeItem<>(this);
+        List<TreeItem<TreeNode>> children = treeItem.getChildren();
+        wsdlOperations.forEach(wsdlOperation -> {
+            children.add(wsdlOperation.getTreeItem());
+        });
+    }
+
+    public TreeItem<TreeNode> getTreeItem() {
         return treeItem;
     }
 }

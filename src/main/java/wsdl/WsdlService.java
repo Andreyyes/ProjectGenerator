@@ -2,7 +2,6 @@ package wsdl;
 
 import javafx.scene.control.TreeItem;
 import org.apache.cxf.common.util.PackageUtils;
-import org.apache.cxf.tools.util.NameUtil;
 import sample.TreeNode;
 
 import javax.wsdl.Port;
@@ -11,6 +10,8 @@ import javax.xml.namespace.QName;
 import java.util.*;
 
 public class WsdlService extends TreeNode {
+
+    private TreeItem<TreeNode> treeItem = null;
 
     private final WsdlFile wsdlFile;
     private final List<WsdlPort> wsdlPorts;
@@ -27,7 +28,6 @@ public class WsdlService extends TreeNode {
         //Description description = wsdlFile.getDescription();
 
         //Получаем сведения о сервисе
-        //QName serviceQName = description.getServices().get(index).getQName();
         QName serviceQName = service.getQName();
         serviceName = serviceQName.getLocalPart();
         namespace = serviceQName.getNamespaceURI();
@@ -36,79 +36,14 @@ public class WsdlService extends TreeNode {
         convertedNamespace = PackageUtils.getPackageNameByNameSpaceURI(namespace);
         //String serviceClassName = NameUtil.mangleNameToClassName(serviceName);
 
-        //Получаем сведения об интерфейсе
-        //interfaceName = description.getInterfaces().get(index).getQName().getLocalPart();
-        /*try {
-            //InterfaceType interfaceType = service.getInterface();
-            //interfaceName = service.getInterface().getQName().getLocalPart();
-            convertedInterfaceName = NameUtil.mangleNameToClassName(interfaceName);
-        } catch (Exception e) {
-            //interfaceName = "NONE";
-            convertedInterfaceName = "NONE";
-        }*/
-
-
-
-
-
-
-
-
-        //Map ports1 = service.getPorts();
-/*
-        Map data = new HashMap<>();
-        data.put(100, "ABCD");
-        data.put(200, "EFGH");
-
-        Set<String> keys = data.keySet();
-
-        System.out.println(keys.stream().count());
-
-        keys.forEach(k->{
-            System.out.println(k);
-        });
-
-
-        data.forEach((key, val)->{
-            System.out.println(key + " = " + val);
-        });
-
-*/
-
-
-
-        //Map<QName, Port> ports = service.getPorts();
-        //Set<QName> keys1 = ports.keySet();
-
-        //keys1.forEach(k -> {
-            //System.out.println(k);
-        //});
-
-        //ports.keySet().forEach(f->{
-        //    System.out.println(f);
-            //System.out.println(ports.get(f));
-            //wsdlPorts.add(new WsdlPort(this, ports.get(f)));
-        //});
-
-        /*ports.entrySet().forEach(f -> {
-            wsdlPorts.add(new WsdlPort(this, f.getValue()));
-        });*/
-
+        @SuppressWarnings("unchecked")
         Map<String, Port> ports = service.getPorts();
         wsdlPorts = new ArrayList<>();
         ports.forEach((name, port) -> {
             wsdlPorts.add(new WsdlPort(this, port));
         });
 
-/*
-        Map data = new HashMap<>();
-        data.put(100, "ABCD");
-        data.put(200, "EFGH");
-
-        data.forEach((key, val)->{
-            System.out.println(key + " = " + val);
-        });*/
-
+        createTreeItem();
     }
 
     @Override
@@ -136,20 +71,15 @@ public class WsdlService extends TreeNode {
         return convertedNamespace;
     }
 
-    //public String getInterfaceName() {
-    //    return interfaceName;
-    //}
-
-    //public String getConvertedInterfaceName() {
-    //    return convertedInterfaceName;
-    //}
-
-    public TreeItem<TreeNode> getAsTreeItem() {
-        TreeItem<TreeNode> treeItem = new TreeItem<>(this);
+    public void createTreeItem() {
+        treeItem = new TreeItem<>(this);
         List<TreeItem<TreeNode>> children = treeItem.getChildren();
         wsdlPorts.forEach(wsdlPort -> {
-            children.add(wsdlPort.getAsTreeItem());
+            children.add(wsdlPort.getTreeItem());
         });
+    }
+
+    public TreeItem<TreeNode> getTreeItem() {
         return treeItem;
     }
 }

@@ -106,8 +106,17 @@ public class Controller implements Initializable {
 
         WsdlFile wsdlFile = new WsdlFile(file);
 
+        TreeItem<TreeNode> wsdlTreeItem = wsdlFile.getTreeItem();
+
         //Добавляем в дерево WSDL-файл
-        projectTree.getRoot().getChildren().add(wsdlFile.getAsTreeItem());
+        projectTree.getRoot().getChildren().add(wsdlTreeItem);
+
+        //wsdlTreeItem.setExpanded( true );
+        //wsdlFile.getWsdlServices().forEach();
+
+
+        //Разворачиваем узел
+        //expandTreeView(wsdlTreeItem);
 
         //Handler handler = new Handler();
         //handler.parseWsdlFile(file);
@@ -164,4 +173,30 @@ public class Controller implements Initializable {
         contextMenu.show(projectTree, 10, 10);
 
     }
+
+//    private void expandTreeView( TreeItem<TreeNode> selectedItem )
+//    {
+//        if ( selectedItem != null )
+//        {
+//            expandTreeView( selectedItem.getParent() );
+//
+//            if ( ! selectedItem.isLeaf() )
+//            {
+//                selectedItem.setExpanded( true );
+//            }
+//        }
+//    }
+
+//    private void expandTreeView(TreeItem<TreeNode> selectedItem) {
+//        if (selectedItem != null) {
+//            System.out.println(selectedItem);
+//            if (selectedItem.isLeaf() == false) {
+//                selectedItem.setExpanded(true);
+//            }
+//            TreeItem<TreeNode> parent = selectedItem.getParent();
+//            expandTreeView(parent);
+//        } else {
+//            System.out.println("null");
+//        }
+//    }
 }
