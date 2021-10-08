@@ -1,34 +1,29 @@
 package wsdl;
 
-import com.predic8.schema.*;
-import com.predic8.wsdl.*;
-import groovy.xml.QName;
 import javafx.scene.control.TreeItem;
 import org.apache.cxf.common.util.PackageUtils;
 import org.apache.cxf.tools.util.NameUtil;
-//import org.ow2.easywsdl.wsdl.api.Description;
-//import org.ow2.easywsdl.wsdl.api.InterfaceType;
-//import org.ow2.easywsdl.wsdl.api.Service;
-//import org.ow2.easywsdl.wsdl.api.WSDLException;
 import sample.TreeNode;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.wsdl.Port;
+import javax.wsdl.Service;
+import javax.xml.namespace.QName;
+import java.util.*;
 
 public class WsdlService extends TreeNode {
 
-    private WsdlFile wsdlFile;
-    private List<WsdlPort> wsdlPorts;
+    private final WsdlFile wsdlFile;
+    private final List<WsdlPort> wsdlPorts;
 
     private String serviceName;
     private String namespace;
     private String convertedNamespace;
-    private String interfaceName;
-    private String convertedInterfaceName;
+    //private String interfaceName;
+    //private String convertedInterfaceName;
 
     public WsdlService(WsdlFile wsdlFile, Service service) {
         this.wsdlFile = wsdlFile;
-        Definitions definitions = wsdlFile.getDefinitions();
+        //Definitions definitions = wsdlFile.getDefinitions();
         //Description description = wsdlFile.getDescription();
 
         //Получаем сведения о сервисе
@@ -43,19 +38,77 @@ public class WsdlService extends TreeNode {
 
         //Получаем сведения об интерфейсе
         //interfaceName = description.getInterfaces().get(index).getQName().getLocalPart();
-        try {
+        /*try {
             //InterfaceType interfaceType = service.getInterface();
             //interfaceName = service.getInterface().getQName().getLocalPart();
             convertedInterfaceName = NameUtil.mangleNameToClassName(interfaceName);
         } catch (Exception e) {
-            interfaceName = "NONE";
+            //interfaceName = "NONE";
             convertedInterfaceName = "NONE";
-        }
+        }*/
 
-        wsdlPorts = new ArrayList<>();
-        service.getPorts().forEach(endpoint -> {
-            //wsdlPorts.add(new WsdlPort(this, endpoint));
+
+
+
+
+
+
+
+        //Map ports1 = service.getPorts();
+/*
+        Map data = new HashMap<>();
+        data.put(100, "ABCD");
+        data.put(200, "EFGH");
+
+        Set<String> keys = data.keySet();
+
+        System.out.println(keys.stream().count());
+
+        keys.forEach(k->{
+            System.out.println(k);
         });
+
+
+        data.forEach((key, val)->{
+            System.out.println(key + " = " + val);
+        });
+
+*/
+
+
+
+        //Map<QName, Port> ports = service.getPorts();
+        //Set<QName> keys1 = ports.keySet();
+
+        //keys1.forEach(k -> {
+            //System.out.println(k);
+        //});
+
+        //ports.keySet().forEach(f->{
+        //    System.out.println(f);
+            //System.out.println(ports.get(f));
+            //wsdlPorts.add(new WsdlPort(this, ports.get(f)));
+        //});
+
+        /*ports.entrySet().forEach(f -> {
+            wsdlPorts.add(new WsdlPort(this, f.getValue()));
+        });*/
+
+        Map<String, Port> ports = service.getPorts();
+        wsdlPorts = new ArrayList<>();
+        ports.forEach((name, port) -> {
+            wsdlPorts.add(new WsdlPort(this, port));
+        });
+
+/*
+        Map data = new HashMap<>();
+        data.put(100, "ABCD");
+        data.put(200, "EFGH");
+
+        data.forEach((key, val)->{
+            System.out.println(key + " = " + val);
+        });*/
+
     }
 
     @Override
@@ -83,13 +136,13 @@ public class WsdlService extends TreeNode {
         return convertedNamespace;
     }
 
-    public String getInterfaceName() {
-        return interfaceName;
-    }
+    //public String getInterfaceName() {
+    //    return interfaceName;
+    //}
 
-    public String getConvertedInterfaceName() {
-        return convertedInterfaceName;
-    }
+    //public String getConvertedInterfaceName() {
+    //    return convertedInterfaceName;
+    //}
 
     public TreeItem<TreeNode> getAsTreeItem() {
         TreeItem<TreeNode> treeItem = new TreeItem<>(this);

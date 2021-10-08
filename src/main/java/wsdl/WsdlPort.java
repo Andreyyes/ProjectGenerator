@@ -1,24 +1,41 @@
 package wsdl;
 
-import com.predic8.schema.*;
-import com.predic8.wsdl.*;
+//import com.predic8.schema.*;
+//import com.predic8.wsdl.*;
 import javafx.scene.control.TreeItem;
 //import org.ow2.easywsdl.wsdl.api.Endpoint;
+import org.apache.cxf.tools.util.NameUtil;
 import sample.TreeNode;
 
+import javax.wsdl.Port;
 import java.util.List;
 
 public class WsdlPort extends TreeNode {
 
-    private final WsdlService wsdlService = null;
+    private final WsdlService wsdlService;
 
-    private final String portName ="a";
+    private Port port;
+    private final String portName;
 
-    /*public WsdlPort(WsdlService wsdlService, Endpoint endpoint) {
+    //private String interfaceName;
+    private String convertedInterfaceName;
+
+    public WsdlPort(WsdlService wsdlService, Port port) {
         this.wsdlService = wsdlService;
+        this.port = port;
 
-        portName = endpoint.getName();
-    }*/
+        portName = port.getName();
+        //interfaceName = port.getBinding().
+
+        try {
+            //InterfaceType interfaceType = service.getInterface();
+            //interfaceName = service.getInterface().getQName().getLocalPart();
+            convertedInterfaceName = NameUtil.mangleNameToClassName(portName);
+        } catch (Exception e) {
+            //interfaceName = "NONE";
+            convertedInterfaceName = "NONE";
+        }
+    }
 
     public WsdlService getWsdlService() {
         return wsdlService;
@@ -53,7 +70,7 @@ public class WsdlPort extends TreeNode {
                 wsdlService.getWsdlFile().getFile().getName(), //wsdlURL
                 wsdlService.getServiceName(), //serviceName
                 portName, //endpointName
-                wsdlService.getConvertedNamespace() + "." + wsdlService.getConvertedInterfaceName(), //serviceClass
+                wsdlService.getConvertedNamespace() + "." + convertedInterfaceName,//wsdlService.getConvertedInterfaceName(), //serviceClass
                 wsdlService.getNamespace()); //xmlns:a
         return rez;
     }

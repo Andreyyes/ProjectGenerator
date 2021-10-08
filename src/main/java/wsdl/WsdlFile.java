@@ -1,42 +1,75 @@
 package wsdl;
 
-import com.predic8.schema.*;
-import com.predic8.wsdl.*;
 import javafx.scene.control.TreeItem;
-//import org.ow2.easywsdl.wsdl.WSDLFactory;
-//import org.ow2.easywsdl.wsdl.api.Description;
-//import org.ow2.easywsdl.wsdl.api.Service;
-//import org.ow2.easywsdl.wsdl.api.WSDLReader;
-import org.xml.sax.InputSource;
 import sample.TreeNode;
 
+import javax.wsdl.Definition;
+import javax.wsdl.Service;
+import javax.wsdl.extensions.ExtensionRegistry;
+import javax.wsdl.factory.WSDLFactory;
+import javax.wsdl.xml.WSDLReader;
+import javax.xml.namespace.QName;
 import java.io.File;
 import java.io.FileInputStream;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class WsdlFile extends TreeNode {
     private final File file;
-    private String fileContent;
-    //private WsdlData wsdlData;
-    //private Description description;
-    private Definitions definitions;
-    private List<WsdlService> wsdlServices;
+    private final String fileContent;
+
+    private final Definition definition;
+    private final List<WsdlService> wsdlServices;
 
     public WsdlFile(File file) throws Exception {
         this.file = file;
         nodeName = file.getName();
         fileContent = new String(Files.readAllBytes(file.toPath()));
 
-        WSDLParser parser = new WSDLParser();
-        definitions = parser.parse(new FileInputStream(file));
+        WSDLFactory wsdlFactory = WSDLFactory.newInstance();
 
-        debugPrint();
+        //--Create a reader and register the standard extensions
+        WSDLReader wsdlReader = wsdlFactory.newWSDLReader();
+        ExtensionRegistry extensionRegistry = wsdlFactory.newPopulatedExtensionRegistry();
+        wsdlReader.setExtensionRegistry(extensionRegistry);
 
-        definitions.getServices().forEach(service -> {
+        //--Set a sixty-second timeout for reading the WSDL definition
+        //System.setProperty(oracle.webservices.wsdl.WSDLFactoryImpl.WSDL_READ_TIMEOUT, "60");
+
+        //--Read a WSDL file, including any imports
+        //Definition def = wsdlReader.readWSDL("C:\\Downloads\\P1-portal-wsdl.wsdl");
+        definition = wsdlReader.readWSDL(file.getAbsolutePath());
+
+        //System.out.println("TNS = " + definition.getTargetNamespace());
+
+        //debugPrint();
+
+
+        //Set<QName> a =  services.keySet();
+
+//        a.forEach(k -> {
+//            Service srv = services.get(k);
+//            System.out.println(srv.getQName().getLocalPart());
+//        });
+
+        //Set a =  services.keySet();
+
+        Map<QName, Service> services = definition.getServices();
+
+        wsdlServices = new ArrayList<>();
+        services.forEach((name, service) -> {
+            //WsdlService wsdlService = new WsdlService(this, service);
             wsdlServices.add(new WsdlService(this, service));
         });
+
+
+//        definition.getServices().forEach(service -> {
+//            //WsdlService wsdlService = new WsdlService(this, service);
+//            wsdlServices.add(new WsdlService(this, service));
+//        });
 
         // Read a WSDL 1.1 or 2.0
         /*
@@ -67,9 +100,9 @@ public class WsdlFile extends TreeNode {
 //    }
 
 
-    public Definitions getDefinitions() {
-        return definitions;
-    }
+//    public Definitions getDefinitions() {
+//        return definitions;
+//    }
 
     public String getFileContent() {
         return fileContent;
@@ -86,13 +119,14 @@ public class WsdlFile extends TreeNode {
     public TreeItem<TreeNode> getAsTreeItem() {
         TreeItem<TreeNode> treeItem = new TreeItem<>(this);
         List<TreeItem<TreeNode>> children = treeItem.getChildren();
+
         wsdlServices.forEach(wsdlService -> {
             children.add(wsdlService.getAsTreeItem());
         });
         return treeItem;
     }
 
-
+/*
     public void debugPrint() {
         out("-------------- WSDL Details --------------");
         out("TargenNamespace: \t" + definitions.getTargetNamespace());
@@ -180,7 +214,7 @@ public class WsdlFile extends TreeNode {
         }
         out("");
     }
-
+*/
     private static void out(String str) {
         System.out.println(str);
     }

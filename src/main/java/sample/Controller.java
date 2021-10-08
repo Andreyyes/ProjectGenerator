@@ -1,5 +1,7 @@
 package sample;
 
+//import com.predic8.wsdl.Definitions;
+//import com.predic8.wsdl.WSDLParser;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
