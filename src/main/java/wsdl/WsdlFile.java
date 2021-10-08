@@ -32,6 +32,8 @@ public class WsdlFile extends TreeNode {
         WSDLParser parser = new WSDLParser();
         definitions = parser.parse(new FileInputStream(file));
 
+        debugPrint();
+
         definitions.getServices().forEach(service -> {
             wsdlServices.add(new WsdlService(this, service));
         });
