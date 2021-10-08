@@ -2,10 +2,10 @@ package sample;
 
 import org.apache.cxf.common.util.PackageUtils;
 import org.apache.cxf.tools.util.NameUtil;
-import org.ow2.easywsdl.wsdl.WSDLFactory;
-import org.ow2.easywsdl.wsdl.api.Description;
-import org.ow2.easywsdl.wsdl.api.WSDLReader;
-import org.ow2.easywsdl.wsdl.api.abstractItf.AbsItfService;
+//import org.ow2.easywsdl.wsdl.WSDLFactory;
+//import org.ow2.easywsdl.wsdl.api.Description;
+//import org.ow2.easywsdl.wsdl.api.WSDLReader;
+//import org.ow2.easywsdl.wsdl.api.abstractItf.AbsItfService;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -190,7 +190,7 @@ public class Handler {
         //inputSource.setByteStream();
 
         // Read a WSDL 1.1 or 2.0
-        WSDLReader reader = WSDLFactory.newInstance().newWSDLReader();
+        /*WSDLReader reader = WSDLFactory.newInstance().newWSDLReader();
         Description desc = reader.read(inputSource);
 
         //AbsItfService service = desc.getServices().get(0);
@@ -212,7 +212,7 @@ public class Handler {
         String rez = String.format(pattern, serviceName, serviceName, file.getName(), serviceName, serviceName, convertedNamespace + "." + convertedInterfaceName, namespace);
 
         System.out.println(rez);
-
+*/
 
         int k = 0;
 

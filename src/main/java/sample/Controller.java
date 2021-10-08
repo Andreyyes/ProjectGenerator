@@ -11,9 +11,11 @@ import wsdl.WsdlPort;
 import wsdl.WsdlService;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
+
 
 public class Controller implements Initializable {
 /*
@@ -104,12 +106,16 @@ public class Controller implements Initializable {
 
         //Добавляем в дерево WSDL-файл
         projectTree.getRoot().getChildren().add(wsdlFile.getAsTreeItem());
-        //projectTree.getRoot().getChildren().add(new TreeItem<>(new WsdlFile(file)));
-
-
 
         //Handler handler = new Handler();
         //handler.parseWsdlFile(file);
+
+
+        //WSDLParser parser = new WSDLParser();
+
+        //Definitions defs = parser.parse("http://www.thomas-bayer.com/axis2/services/BLZService?wsdl");
+
+        //Definitions defs = parser.parse(new FileInputStream(file));
     }
 
     @FXML

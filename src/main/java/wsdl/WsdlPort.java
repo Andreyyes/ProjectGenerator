@@ -1,22 +1,24 @@
 package wsdl;
 
+import com.predic8.schema.*;
+import com.predic8.wsdl.*;
 import javafx.scene.control.TreeItem;
-import org.ow2.easywsdl.wsdl.api.Endpoint;
+//import org.ow2.easywsdl.wsdl.api.Endpoint;
 import sample.TreeNode;
 
 import java.util.List;
 
 public class WsdlPort extends TreeNode {
 
-    private final WsdlService wsdlService;
+    private final WsdlService wsdlService = null;
 
-    private final String portName;
+    private final String portName ="a";
 
-    public WsdlPort(WsdlService wsdlService, Endpoint endpoint) {
+    /*public WsdlPort(WsdlService wsdlService, Endpoint endpoint) {
         this.wsdlService = wsdlService;
 
         portName = endpoint.getName();
-    }
+    }*/
 
     public WsdlService getWsdlService() {
         return wsdlService;

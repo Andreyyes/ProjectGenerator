@@ -1,14 +1,17 @@
 package wsdl;
 
+import com.predic8.schema.*;
+import com.predic8.wsdl.*;
+import groovy.xml.QName;
 import javafx.scene.control.TreeItem;
 import org.apache.cxf.common.util.PackageUtils;
 import org.apache.cxf.tools.util.NameUtil;
-import org.ow2.easywsdl.wsdl.api.Description;
-import org.ow2.easywsdl.wsdl.api.InterfaceType;
-import org.ow2.easywsdl.wsdl.api.Service;
-import org.ow2.easywsdl.wsdl.api.WSDLException;
+//import org.ow2.easywsdl.wsdl.api.Description;
+//import org.ow2.easywsdl.wsdl.api.InterfaceType;
+//import org.ow2.easywsdl.wsdl.api.Service;
+//import org.ow2.easywsdl.wsdl.api.WSDLException;
 import sample.TreeNode;
-import javax.xml.namespace.QName;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +28,8 @@ public class WsdlService extends TreeNode {
 
     public WsdlService(WsdlFile wsdlFile, Service service) {
         this.wsdlFile = wsdlFile;
-        Description description = wsdlFile.getDescription();
+        Definitions definitions = wsdlFile.getDefinitions();
+        //Description description = wsdlFile.getDescription();
 
         //Получаем сведения о сервисе
         //QName serviceQName = description.getServices().get(index).getQName();
@@ -41,7 +45,7 @@ public class WsdlService extends TreeNode {
         //interfaceName = description.getInterfaces().get(index).getQName().getLocalPart();
         try {
             //InterfaceType interfaceType = service.getInterface();
-            interfaceName = service.getInterface().getQName().getLocalPart();
+            //interfaceName = service.getInterface().getQName().getLocalPart();
             convertedInterfaceName = NameUtil.mangleNameToClassName(interfaceName);
         } catch (Exception e) {
             interfaceName = "NONE";
@@ -49,8 +53,8 @@ public class WsdlService extends TreeNode {
         }
 
         wsdlPorts = new ArrayList<>();
-        service.getEndpoints().forEach(endpoint -> {
-            wsdlPorts.add(new WsdlPort(this, endpoint));
+        service.getPorts().forEach(endpoint -> {
+            //wsdlPorts.add(new WsdlPort(this, endpoint));
         });
     }
 

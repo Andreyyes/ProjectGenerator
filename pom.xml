@@ -13,7 +13,7 @@
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <openjfx.ver>17</openjfx.ver>
+        <openjfx.ver>16</openjfx.ver>
     </properties>
 
     <dependencies>
@@ -31,13 +31,34 @@
 <!--            <version>1.6.3</version>-->
 <!--        </dependency>-->
 
+<!--        &lt;!&ndash; https://mvnrepository.com/artifact/org.ow2.easywsdl/easywsdl-schema &ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>org.ow2.easywsdl</groupId>-->
+<!--            <artifactId>easywsdl-schema</artifactId>-->
+<!--            <version>2.7.0</version>-->
+<!--        </dependency>-->
+
+
+        <dependency>
+            <groupId>org.glassfish.jaxb</groupId>
+            <artifactId>jaxb-runtime</artifactId>
+            <version>2.3.3</version>
+        </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.ow2.easywsdl/easywsdl-wsdl -->
+<!--        <dependency>-->
+<!--            <groupId>org.ow2.easywsdl</groupId>-->
+<!--            <artifactId>easywsdl-wsdl</artifactId>-->
+<!--            <version>2.7.0</version>-->
+<!--        </dependency>-->
+
+        <!-- https://mvnrepository.com/artifact/com.predic8/soa-model-core -->
         <dependency>
-            <groupId>org.ow2.easywsdl</groupId>
-            <artifactId>easywsdl-wsdl</artifactId>
-            <version>2.7.0</version>
+            <groupId>com.predic8</groupId>
+            <artifactId>soa-model-core</artifactId>
+            <version>1.6.3</version>
         </dependency>
+
 
         <!-- Для работы WSDL парсера -->
         <dependency>
@@ -53,6 +74,11 @@
             <version>1.1.1</version>
         </dependency>
 
+<!--        <dependency>-->
+<!--            <groupId>org.glassfish.jaxb</groupId>-->
+<!--            <artifactId>jaxb-runtime</artifactId>-->
+<!--            <version>3.0.2</version>-->
+<!--        </dependency>-->
 
 
         <!-- Необходима для преобразования из объектов в XML и наоборот -->
@@ -135,14 +161,14 @@
             <artifactId>cxf-tools-common</artifactId>
             <version>3.4.4</version>
         </dependency>
-
-
     </dependencies>
 
     <build>
         <plugins>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
+                <version>3.3.0</version>
                 <configuration>
                     <descriptorRefs>
                         <descriptorRef>jar-with-dependencies</descriptorRef>
@@ -162,6 +188,8 @@
                     </execution>
                 </executions>
             </plugin>
+
+
         </plugins>
 
     </build>
